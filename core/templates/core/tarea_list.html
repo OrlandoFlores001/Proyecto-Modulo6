@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Tareas - {{ proyecto.nombre }}{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2><i class="bi bi-list-check"></i> Tareas de: <span class="text-primary">{{ proyecto.nombre }}</span></h2>
+        <p class="text-muted">{{ proyecto.descripcion }}</p>
+    </div>
+    <div>
+        <a href="{% url 'proyectos_list' %}" class="btn btn-outline-secondary me-2">Volver a Proyectos</a>
+        <a href="{% url 'tarea_create' proyecto.id %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Nueva Tarea
+        </a>
+    </div>
+</div>
+
+{% if tareas %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle shadow-sm bg-white rounded">
+            <thead class="table-dark">
+                <tr>
+                    <th>Título</th>
+                    <th>Estado</th>
+                    <th>Prioridad</th>
+                    <th>Fecha Límite</th>
+                    <th>Asignado A</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tarea in tareas %}
+                    <tr>
+                        <td>
+                            <strong>{{ tarea.titulo }}</strong>
+                            {% if tarea.descripcion %}
+                                <br><small class="text-muted">{{ tarea.descripcion }}</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge {% if tarea.estado == 'completada' %}bg-success{% elif tarea.estado == 'en_progreso' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                                {{ tarea.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge {% if tarea.prioridad == 'alta' %}bg-danger{% elif tarea.prioridad == 'media' %}bg-info text-dark{% else %}bg-light text-dark border{% endif %}">
+                                {{ tarea.get_prioridad_display }}
+                            </span>
+                        </td>
+                        <td>{{ tarea.fecha_limite|date:"d/m/Y" }}</td>
+                        <td>{{ tarea.asignado_a.username|default:"Sin asignar" }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'tarea_update' tarea.id %}" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'tarea_delete' tarea.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info text-center">
+        Este proyecto aún no tiene tareas. <a href="{% url 'tarea_create' proyecto.id %}">¡Crea la primera!</a>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'core/base.html' %}
+{% block titulo %}{% if object %}Editar Proyecto{% else %}Nuevo Proyecto{% endif %}{% endblock %}
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-folder"></i> {% if object %}Editar Proyecto{% else %}Nuevo Proyecto{% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'proyectos_list' %}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-success">Guardar Proyecto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

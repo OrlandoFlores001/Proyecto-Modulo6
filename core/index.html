@@ -1,0 +1,10 @@
+<form method="POST">
+    {% csrf_token %}
+    {%for campo in form%}
+    <label for="">Usuario</label>
+    {{form.username}}
+    <label for="">Contraseña</label>
+    {{form.password}}
+    <button>Login</button>
+    {% endfor %}
+</form>

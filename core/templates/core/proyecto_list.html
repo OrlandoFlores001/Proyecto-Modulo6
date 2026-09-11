@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Mis Proyectos{% endblock %}
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-folder2-open"></i> Mis Proyectos</h2>
+    <a href="{% url 'proyecto_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nuevo Proyecto
+    </a>
+</div>
+
+{% if proyectos %}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for proyecto in proyectos %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title text-primary">{{ proyecto.nombre }}</h4>
+                        <p class="card-text text-muted">{{ proyecto.descripcion|default:"Sin descripción" }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
+                        <div>
+                            <a href="{% url 'tareas_list' proyecto.id %}" class="btn btn-sm btn-outline-primary me-1">
+                                <i class="bi bi-list-task"></i> Ver Tareas ({{ proyecto.tareas.count }})
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{% url 'proyecto_update' proyecto.id %}" class="btn btn-sm btn-outline-secondary me-1">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="{% url 'proyecto_delete' proyecto.id %}" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info text-center">
+        No tienes proyectos creados aún. <a href="{% url 'proyecto_create' %}">¡Crea uno aquí!</a>
+    </div>
+{% endif %}
+{% endblock %}

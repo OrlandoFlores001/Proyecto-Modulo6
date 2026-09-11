@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+{% block titulo %}Eliminar Proyecto{% endblock %}
+{% block contenido %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-exclamation-triangle"></i> Eliminar Proyecto</h4>
+            </div>
+            <div class="card-body text-center">
+                <p class="fs-5">¿Estás seguro de que deseas eliminar el proyecto <strong>"{{ object.nombre }}"</strong>?</p>
+                <p class="text-danger small">Esta acción también eliminará todas las tareas asociadas a este proyecto.</p>
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <a href="{% url 'proyectos_list' %}" class="btn btn-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
